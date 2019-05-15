@@ -1,0 +1,5 @@
+# VSCode extensions
+.vscode
+
+# pycache
+__pycache__

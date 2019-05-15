@@ -1,0 +1,17 @@
+version: '3.7'
+
+services: 
+  # api
+  api: 
+    container_name: email-scheduler
+    build: ./
+    # command: flask run
+    working_dir: /usr/src/email-scheduler
+    environment: 
+      FLASK_APP: server.py
+      FLASK_DEBUG: 'true'
+      FLASK_ENV: development
+    ports: 
+      - "5555:5000"
+    volumes: 
+      - .:/usr/src/email-scheduler
