@@ -23,10 +23,10 @@ def root ():
     return 'ok', 200
   elif request.method == 'POST': 
     email, date = request.get_json().values()
+    if email is None or date is None:
+      return 'Missing email / date', 500
     scheduler.add_job(send_email, 'date', run_date=date, args=[email])
     return 'ok', 200
-    # if email is None or date is None:
-    #   return 'Missing email / date', 500
     
 def send_email (email): 
   print('email: ', email)
