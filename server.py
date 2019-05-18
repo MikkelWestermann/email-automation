@@ -26,6 +26,9 @@ def root ():
     if email is None or date is None:
       return 'Missing email / date', 500
     py_date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ').isoformat()
+    # Check that the provided date has not already happened
+    if py_date < datetime.now().isoformat(): 
+      return 'Date has already happened', 500
     scheduler.add_job(send_email, 'date', run_date=py_date, args=[email])
     return 'ok', 200
     
