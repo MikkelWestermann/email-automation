@@ -3,6 +3,8 @@ import json
 from flask import Flask, request
 app = Flask(__name__)
 
+from datetime import datetime, timedelta
+
 # Sendgrid imports and config
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -20,7 +22,8 @@ def root ():
     return 'ok', 200
   elif request.method == 'POST': 
     # email, date = request.get_json().values()
-    send_email('mikkeldrifter@gmail.com') 
+    send_date = datetime.now() + timedelta(minutes=2)
+    scheduler.add_job(send_email, 'date', run_date=send_date, args=['mikkeldrifter@gmail.com'])
     return 'ok', 200
     # if email is None or date is None:
     #   return 'Missing email / date', 500
