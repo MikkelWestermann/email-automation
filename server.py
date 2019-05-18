@@ -2,8 +2,6 @@ import os
 import json
 from flask import Flask, request
 app = Flask(__name__)
-
-from datetime import datetime, timedelta
  
 # Sendgrid imports and config
 from sendgrid import SendGridAPIClient
