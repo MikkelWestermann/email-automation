@@ -10,6 +10,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 SENDGRID_SENDER = os.getenv('SENDGRID_SENDER')
+DEFAULT_TEMPLATE_ID = os.getenv('DEFAULT_TEMPLATE_ID')
 
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -42,7 +43,7 @@ def send_email (email):
     to_emails=email,
     subject='Sending with Twilio SendGrid is Fun',
     html_content='<strong>and easy to do anywhere, even with Python</strong>')
-  message.template_id = 'd-cee6d70cfa8648b8b020b0b70e2556f0'
+  message.template_id = DEFAULT_TEMPLATE_ID
   try:
       sg = SendGridAPIClient(SENDGRID_API_KEY)
       response = sg.send(message)
