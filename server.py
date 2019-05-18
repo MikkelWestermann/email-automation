@@ -33,6 +33,7 @@ def send_email (email):
     to_emails=email,
     subject='Sending with Twilio SendGrid is Fun',
     html_content='<strong>and easy to do anywhere, even with Python</strong>')
+  message.template_id = 'd-cee6d70cfa8648b8b020b0b70e2556f0'
   try:
       sg = SendGridAPIClient(SENDGRID_API_KEY)
       response = sg.send(message)
