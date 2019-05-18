@@ -1,18 +1,12 @@
 import os
 import json
 from flask import Flask, request
-from dotenv import load_dotenv
-# from flask_apscheduler import APScheduler
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
  
 import time
 
 app = Flask(__name__)
-# scheduler = APScheduler()
-# scheduler.init_app(app)
-# scheduler.start()
-load_dotenv()
 
 SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 # SENDGRID_SENDER = os.environ['SENDGRID_SENDER']
