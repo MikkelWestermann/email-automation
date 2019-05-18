@@ -4,17 +4,18 @@ from flask import Flask, request
 app = Flask(__name__)
 
 from datetime import datetime, timedelta
-
+ 
 # Sendgrid imports and config
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 # SENDGRID_SENDER = os.environ['SENDGRID_SENDER']
 
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
 
 scheduler = BackgroundScheduler()
+scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
 def root (): 
@@ -22,13 +23,15 @@ def root ():
     return 'ok', 200
   elif request.method == 'POST': 
     # email, date = request.get_json().values()
-    send_date = datetime.now() + timedelta(minutes=2)
+    send_date = datetime.now() + timedelta(seconds=30)
+    print('send_date: ', send_date)
     scheduler.add_job(send_email, 'date', run_date=send_date, args=['mikkeldrifter@gmail.com'])
     return 'ok', 200
     # if email is None or date is None:
     #   return 'Missing email / date', 500
     
 def send_email (email): 
+  print('email: ', email)
   message = Mail(
     from_email='from_email@example.com',
     to_emails=email,
