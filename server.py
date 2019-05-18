@@ -14,7 +14,6 @@ DEFAULT_TEMPLATE_ID = os.getenv('DEFAULT_TEMPLATE_ID')
 
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
-
 scheduler = BackgroundScheduler()
 scheduler.start()
 
@@ -23,7 +22,7 @@ def root ():
   if request.method == 'GET': 
     return 'ok', 200
   elif request.method == 'POST': 
-    email, date, subject = request.get_json().values()
+    email, date, subject, data = request.get_json().values()
     # Check that email and date is provided
     if email is None or date is None or subject is None:
       return 'Missing email / date / subject', 500
@@ -33,15 +32,16 @@ def root ():
     if py_date < datetime.now().isoformat(): 
       return 'Date has already happened', 500
     # Add send email job to schedule
-    scheduler.add_job(send_email, 'date', run_date=py_date, args=[email, subject])
+    scheduler.add_job(send_email, 'date', run_date=py_date, args=[email, subject, data])
     return 'ok', 200
     
-def send_email (email, subject): 
+def send_email (email, subject, data): 
   print('email: ', email)
   message = Mail(
     from_email=SENDGRID_SENDER,
     to_emails=email,
     subject=subject)
+  message.dynamic_template_data = data
   message.template_id = DEFAULT_TEMPLATE_ID
   try:
       sg = SendGridAPIClient(SENDGRID_API_KEY)
