@@ -22,10 +22,8 @@ def root ():
   if request.method == 'GET': 
     return 'ok', 200
   elif request.method == 'POST': 
-    # email, date = request.get_json().values()
-    send_date = datetime.now() + timedelta(seconds=30)
-    print('send_date: ', send_date)
-    scheduler.add_job(send_email, 'date', run_date=send_date, args=['mikkeldrifter@gmail.com'])
+    email, date = request.get_json().values()
+    scheduler.add_job(send_email, 'date', run_date=date, args=[email])
     return 'ok', 200
     # if email is None or date is None:
     #   return 'Missing email / date', 500
