@@ -22,9 +22,9 @@ def root ():
   if request.method == 'GET': 
     return 'ok', 200
   elif request.method == 'POST': 
-    email, date, subject, data = request.get_json().values()
+    email, date, data = request.get_json().values()
     # Check that email and date is provided
-    if email is None or date is None or subject is None:
+    if email is None or date is None:
       return 'Missing email / date / subject', 500
     # Format the provided date to ISO8601
     py_date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ').isoformat()
@@ -32,15 +32,14 @@ def root ():
     if py_date < datetime.now().isoformat(): 
       return 'Date has already happened', 500
     # Add send email job to schedule
-    scheduler.add_job(send_email, 'date', run_date=py_date, args=[email, subject, data])
+    scheduler.add_job(send_email, 'date', run_date=py_date, args=[email, data])
     return 'ok', 200
     
-def send_email (email, subject, data): 
+def send_email (email, data): 
   print('email: ', email)
   message = Mail(
     from_email=SENDGRID_SENDER,
-    to_emails=email,
-    subject=subject)
+    to_emails=email)
   message.dynamic_template_data = data
   message.template_id = DEFAULT_TEMPLATE_ID
   try:
