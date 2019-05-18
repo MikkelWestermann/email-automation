@@ -7,6 +7,7 @@ services:
     build: ./
     # command: flask run
     working_dir: /usr/src/email-scheduler
+    env_file: .env
     environment: 
       FLASK_APP: server.py
       FLASK_DEBUG: 'true'
