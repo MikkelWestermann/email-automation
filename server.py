@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
-# SENDGRID_SENDER = os.environ['SENDGRID_SENDER']
+SENDGRID_SENDER = os.getenv('SENDGRID_SENDER')
 
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -31,7 +31,7 @@ def root ():
 def send_email (email): 
   print('email: ', email)
   message = Mail(
-    from_email='from_email@example.com',
+    from_email=SENDGRID_SENDER,
     to_emails=email,
     subject='Sending with Twilio SendGrid is Fun',
     html_content='<strong>and easy to do anywhere, even with Python</strong>')
