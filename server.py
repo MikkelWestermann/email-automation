@@ -1,15 +1,18 @@
 import os
 import json
 from flask import Flask, request
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
- 
-import time
-
 app = Flask(__name__)
 
+# Sendgrid imports and config
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 # SENDGRID_SENDER = os.environ['SENDGRID_SENDER']
+
+# APScheduler imports and config
+from apscheduler.schedulers.background import BackgroundScheduler
+
+scheduler = BackgroundScheduler()
 
 @app.route('/', methods=['GET', 'POST'])
 def root (): 
