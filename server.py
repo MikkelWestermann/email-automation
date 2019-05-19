@@ -30,7 +30,7 @@ def root ():
     email, date, data = request.get_json().values()
     # Check that email and date is provided
     if email is None or date is None:
-      return 'Missing email / date / subject', 500
+      return 'Missing email / date', 500
     # Format the provided date to ISO8601
     py_date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ').isoformat()
     # Check that the provided date has not already happened
