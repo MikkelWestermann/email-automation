@@ -1,4 +1,4 @@
-FROM python:stretch
+FROM python:3.6-stretch
 
 RUN mkdir /usr/src/email-scheduler
 
