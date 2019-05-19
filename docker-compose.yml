@@ -12,7 +12,15 @@ services:
       FLASK_APP: server.py
       FLASK_DEBUG: 'true'
       FLASK_ENV: development
+    links: 
+      - postgres
     ports: 
       - "5555:5000"
     volumes: 
       - .:/usr/src/email-scheduler
+
+  # redis db
+  postgres:
+    image: postgresql
+    ports: 
+      - "5432:5432"
