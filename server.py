@@ -14,7 +14,12 @@ DEFAULT_TEMPLATE_ID = os.getenv('DEFAULT_TEMPLATE_ID')
 
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
-scheduler = BackgroundScheduler()
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+POSTGRES_URI = os.getenv('POSTGRES_URI')
+jobstore = {
+  'default': SQLAlchemyJobStore(url=POSTGRES_URI)
+}
+scheduler = BackgroundScheduler(jobstores=jobstore)
 scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
