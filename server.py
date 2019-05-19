@@ -41,7 +41,6 @@ def root ():
     return 'ok', 200
     
 def send_email (email, data): 
-  print('email: ', email)
   message = Mail(
     from_email=SENDGRID_SENDER,
     to_emails=email)
