@@ -1,3 +1,5 @@
 flask==1.0.2
 apscheduler==3.6.0
 sendgrid==6.0.5
+sqlalchemy==0.8
+psycopg2
