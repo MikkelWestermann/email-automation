@@ -1,0 +1,76 @@
+# service
+apiVersion: v1
+kind: Service
+metadata: 
+  name: email-automation-db
+spec: 
+  selector: 
+    name: email-automation-db
+  ports: 
+    - port: 5432
+      targetPort: 5432
+      name: email-automation-db
+  clusterIP: None
+
+---
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: email-automation-db
+  labels: 
+    name: email-automation-db
+spec: 
+  serviceName: email-automation-db
+  replicas: 1
+  selector: 
+    matchLabels: 
+      name: email-automation-db
+  template: 
+    metadata: 
+      name: email-automation-db
+      labels: 
+        name: email-automation-db
+    spec: 
+      containers: 
+        - name: email-automation-db
+          image: postgres
+          ports: 
+            - containerPort: 5432
+              name: email-automation-db
+          env: 
+            - name: POSTGRES_USER
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-db-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-db-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-db-secrets
+                  key: POSTGRES_DB
+          volumeMounts: 
+            - mountPath: /var/lib/postgresql
+              subPath: data
+              name: email-automation-db-data
+      volumes: 
+        - name: email-automation-db-data
+          persistentVolumeClaim: 
+            claimName: email-automation-db-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: email-automation-db-data
+spec: 
+  accessModes: 
+    - ReadWriteOnce
+  resources: 
+    requests: 
+      storage: 5Gi
