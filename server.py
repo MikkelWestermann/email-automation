@@ -53,3 +53,6 @@ def send_email (email, data):
       return response
   except Exception as e: 
       print(e) 
+
+if __name__ == '__main__': 
+  app.run(host='0.0.0.0', port=os.getenv('DEFAULT_PORT') or 5000)
