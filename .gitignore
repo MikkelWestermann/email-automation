@@ -6,3 +6,8 @@ __pycache__
 
 # env
 .env
+
+# Secrets
+secret.*
+*.secret
+*.secret.*
