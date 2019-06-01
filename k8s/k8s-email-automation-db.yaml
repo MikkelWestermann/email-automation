@@ -1,12 +1,12 @@
 # service
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: email-automation-db
-spec: 
-  selector: 
+spec:
+  selector:
     name: email-automation-db
-  ports: 
+  ports:
     - port: 5432
       targetPort: 5432
       name: email-automation-db
@@ -15,62 +15,81 @@ spec:
 ---
 # deployment
 apiVersion: apps/v1
-kind: Deployment
-metadata: 
-  name: email-automation-db
-  labels: 
+kind: StatefulSet
+metadata:
+  labels:
     name: email-automation-db
-spec: 
+  name: email-automation-db
+  annotations:
+    sidecar.istio.io/inject: 'false'
+spec:
   serviceName: email-automation-db
   replicas: 1
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       name: email-automation-db
-  template: 
-    metadata: 
+  template:
+    metadata:
       name: email-automation-db
-      labels: 
+      labels:
         name: email-automation-db
-    spec: 
-      containers: 
+    spec:
+      initContainers:
+        - name: chown-pv
+          image: postgres:9.6
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: email-automation-db-secrets
+                key: POSTGRES_USER
+          volumeMounts:
+            - mountPath: /var/lib/postgresql
+              subPath: data
+              name: email-automation-db-data      
+          command:
+          - chown
+          - $(POSTGRES_USER):$(POSTGRES_USER)
+          - /var/lib/postgresql/data
+      containers:
         - name: email-automation-db
-          image: postgres
-          ports: 
+          image: postgres:9.6
+          ports:
             - containerPort: 5432
               name: email-automation-db
-          env: 
+          env:
             - name: POSTGRES_USER
-              valueFrom: 
-                secretKeyRef: 
+              valueFrom:
+                secretKeyRef:
                   name: email-automation-db-secrets
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              valueFrom: 
-                secretKeyRef: 
+              valueFrom:
+                secretKeyRef:
                   name: email-automation-db-secrets
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              valueFrom: 
-                secretKeyRef: 
+              valueFrom:
+                secretKeyRef:
                   name: email-automation-db-secrets
                   key: POSTGRES_DB
-          volumeMounts: 
+          volumeMounts:
             - mountPath: /var/lib/postgresql
               subPath: data
               name: email-automation-db-data
-      volumes: 
+      volumes:
         - name: email-automation-db-data
-          persistentVolumeClaim: 
+          persistentVolumeClaim:
             claimName: email-automation-db-data
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
-metadata: 
+metadata:
   name: email-automation-db-data
-spec: 
-  accessModes: 
+spec:
+  accessModes:
     - ReadWriteOnce
-  resources: 
-    requests: 
+  resources:
+    requests:
       storage: 5Gi
+
