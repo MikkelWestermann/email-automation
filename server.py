@@ -24,10 +24,14 @@ scheduler = BackgroundScheduler(
   job_defaults={'misfire_grace_period': 24*60*60} # If job is missed, still execute job if it's less than 24 hours after next_run_time
 ) 
 scheduler.add_listener(missed_job, 'EVENT_JOB_MISSED')
+scheduler.add_listener(error_in_job, 'EVENT_JOB_ERROR')
 scheduler.start()
 
-def missed_job ():
+def missed_job():
   print('missed job...')
+
+def error_in_job(): 
+  print('error in job...')
 
 @app.route('/', methods=['GET', 'POST'])
 def root (): 
