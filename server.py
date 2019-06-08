@@ -19,7 +19,10 @@ POSTGRES_URI = os.getenv('POSTGRES_URI')
 jobstore = {
   'default': SQLAlchemyJobStore(url=POSTGRES_URI)
 }
-scheduler = BackgroundScheduler(jobstores=jobstore)
+scheduler = BackgroundScheduler(
+  jobstores=jobstore, 
+  job_defaults={'misfire_grace_period': 24*60*60} # If job is missed, still execute job if it's less than 24 hours after next_run_time
+) 
 scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
