@@ -25,7 +25,7 @@ jobstore = {
 
 scheduler = BackgroundScheduler(
   jobstores=jobstore, 
-  job_defaults={'misfire_grace_period': 24*60*60} # If job is missed, still execute job if it's less than 24 hours after next_run_time
+  job_defaults={'misfire_grace_time': 24*60*60} # If job is missed, still execute job if it's less than 24 hours after next_run_time
 ) 
 # add event listeners
 scheduler.add_listener(missed_job, EVENT_JOB_MISSED)
