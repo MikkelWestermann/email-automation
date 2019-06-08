@@ -17,17 +17,23 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 # import event constants 
 from apscheduler.events import EVENT_JOB_MISSED, EVENT_JOB_ERROR
+# import job / schedule handlers from helpers 
 from helpers import missed_job, error_in_job
+
+# configure postgres jobstore
 POSTGRES_URI = os.getenv('POSTGRES_URI')
 jobstore = {
   'default': SQLAlchemyJobStore(url=POSTGRES_URI)
 }
+
 scheduler = BackgroundScheduler(
   jobstores=jobstore, 
   job_defaults={'misfire_grace_period': 24*60*60} # If job is missed, still execute job if it's less than 24 hours after next_run_time
 ) 
+# add event listeners
 scheduler.add_listener(missed_job, EVENT_JOB_MISSED)
 scheduler.add_listener(error_in_job, EVENT_JOB_ERROR)
+# start the scheduler
 scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
