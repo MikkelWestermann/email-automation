@@ -15,6 +15,7 @@ DEFAULT_TEMPLATE_ID = os.getenv('DEFAULT_TEMPLATE_ID')
 # APScheduler imports and config
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from helpers import missed_job, error_in_job
 POSTGRES_URI = os.getenv('POSTGRES_URI')
 jobstore = {
   'default': SQLAlchemyJobStore(url=POSTGRES_URI)
@@ -26,12 +27,6 @@ scheduler = BackgroundScheduler(
 scheduler.add_listener(missed_job, 'EVENT_JOB_MISSED')
 scheduler.add_listener(error_in_job, 'EVENT_JOB_ERROR')
 scheduler.start()
-
-def missed_job():
-  print('missed job...')
-
-def error_in_job(): 
-  print('error in job...')
 
 @app.route('/', methods=['GET', 'POST'])
 def root (): 
