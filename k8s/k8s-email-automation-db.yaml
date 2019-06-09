@@ -3,65 +3,63 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  labels:
-    app: postgres
 spec:
-  ports:
-  - port: 5432
-    name: postgres
-  clusterIP: None
+  type: ClusterIP
   selector:
-    app: postgres
+    component: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
 
 ---
-# config 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-config
-  labels:
-    app: postgres
-data:
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: password
-
----
-# deployment
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-deployment
 spec:
-  serviceName: "postgres"
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      component: postgres
   template:
     metadata:
       labels:
-        app: postgres
+        component: postgres
     spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: email-automation-db-pvc
+      imagePullSecrets:
+        - name: regcred
       containers:
-      - name: postgres
-        image: postgres:latest
-        envFrom:
-          - configMapRef:
-              name: postgres-config
-        ports:
-        - containerPort: 5432
-          name: postgresdb
-        volumeMounts:
-        - name: postgresdb
-          mountPath: /var/lib/postgresql/data
-          subPath: postgres
-  volumeClaimTemplates:
-  - metadata:
-      name: email-automation-db-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: hostpath
-      resources:
-        requests:
-          storage: 3Gi
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: password
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_URI
+              value: postgres.default.svc.local://postgres:password@postgres:5432/postgres
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: email-automation-db-pvc
+spec:
+  # Access mode gets some instance of storage.
+  # ReadWriteOncence means that it can be used by a single node.
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # find a storage option that has at least 2 gigs of space
+      storage: 2Gi
