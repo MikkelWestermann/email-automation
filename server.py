@@ -6,7 +6,8 @@ app = Flask(__name__)
 from datetime import datetime 
 
 import logging
-logging.basicConfig(level=logging.DEBUG) 
+if os.getenv('FLASK_DEBUG') == 'true':
+  logging.basicConfig(level=logging.DEBUG) 
 
 # import helper functions 
 from helpers import missed_job, error_in_job, send_email
