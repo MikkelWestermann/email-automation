@@ -11,3 +11,6 @@ __pycache__
 secret.*
 *.secret
 *.secret.*
+
+# hidden folders 
+.DS_store
