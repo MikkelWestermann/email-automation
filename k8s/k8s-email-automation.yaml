@@ -48,3 +48,28 @@ spec:
               value: development
             - name: POSTGRES_URI
               value: postgresql://postgres:password@postgres
+            - name: SENDGRID_API_KEY
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-secrets
+                  key: SENDGRID_API_KEY
+            - name: SENDGRID_SENDER
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-secrets
+                  key: SENDGRID_SENDER
+            - name: DEFAULT_TEMPLATE_ID
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-secrets
+                  key: DEFAULT_TEMPLATE_ID
+            - name: ERROR_EMAIL_TEMPLATE
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-secrets
+                  key: ERROR_EMAIL_TEMPLATE
+            - name: DEFAULT_EMAIL_RECIPIENT
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-automation-secrets
+                  key: DEFAULT_EMAIL_RECIPIENT
