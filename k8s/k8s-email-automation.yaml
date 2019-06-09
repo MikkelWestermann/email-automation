@@ -9,8 +9,8 @@ spec:
   ports:
     - port: 5555
       protocol: TCP
-      targetPort: email-auto
-  type: NodePort
+      targetPort:  5000
+  type: LoadBalancer
 
 ---
 # deployment
