@@ -19,7 +19,7 @@ def send_email (email, data, template=DEFAULT_TEMPLATE_ID):
       response = sg.send(message)
       return response
   except Exception as e: 
-    if not data.isErrorMail:
+    if not 'isErrorMail' in data:
       error_email({
         "subject": "Error when sending email",
         "email": email,
