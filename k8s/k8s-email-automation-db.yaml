@@ -48,8 +48,6 @@ spec:
                 secretKeyRef: 
                   name: email-automation-db-secrets
                   key: POSTGRES_USER
-            - name: POSTGRES_URI
-              value: postgres.default.svc.local://postgres:password@postgres:5432/postgres
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
