@@ -3,6 +3,10 @@ import json
 from flask import Flask, request
 app = Flask(__name__)
 
+from flask_cors import CORS, cross_origin
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, resources={r"/": {"origins": os.getenv('FRONTEND_BASE_URL')}})
+
 from datetime import datetime 
 
 import logging
@@ -35,11 +39,13 @@ scheduler.add_listener(error_in_job, EVENT_JOB_ERROR)
 scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
+@cross_origin(['Content-Type', 'application/json'])
 def root ():
   if request.method == 'GET': 
     return 'ok', 200
   elif request.method == 'POST': 
-    email, date, data = request.get_json().values()
+    data = request.data
+    email, date, data = json.loads(data).values()
     # Check that email and date is provided
     if email is None or date is None:
       return 'Missing email / date', 500
