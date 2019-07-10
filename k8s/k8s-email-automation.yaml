@@ -10,7 +10,6 @@ spec:
     - port: 5555
       protocol: TCP
       targetPort:  5000
-  type: LoadBalancer
 
 ---
 # deployment
@@ -35,7 +34,7 @@ spec:
     spec: 
       containers: 
         - name: email-automation
-          image: mikkelwestermann/email-automation
+          image: gcr.io/portfolio-246014/crystal-www-example:latest
           ports: 
             - containerPort: 5000
               name: email-auto
