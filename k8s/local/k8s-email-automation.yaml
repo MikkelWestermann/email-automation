@@ -34,7 +34,7 @@ spec:
     spec: 
       containers: 
         - name: email-automation
-          image: gcr.io/portfolio-246014/crystal-www-example:latest
+          image: gcr.io/portfolio-246014/email-automation:latest
           ports: 
             - containerPort: 5000
               name: email-auto
