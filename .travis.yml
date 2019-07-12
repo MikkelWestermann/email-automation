@@ -4,7 +4,7 @@ sudo: enabled
 # Use node_js environnement
 language: python
 python: 
-  - "3.7"
+  - "3.6"
 
 # Cache Gcloud SDK between commands
 cache:
