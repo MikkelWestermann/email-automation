@@ -1,5 +1,5 @@
-apt-get update
-apt-get -y install lsb-release apt-transport-https
+sudo apt-get update
+sudo apt-get -y install lsb-release apt-transport-https
 
 # Create an environment variable for the correct distribution
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
@@ -11,7 +11,7 @@ echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 # Update the package list and install the Cloud SDK
-apt-get -y update && apt-get -y install google-cloud-sdk
+sudo apt-get -y update && apt-get -y install google-cloud-sdk
 
 # Decode the base64 encoded gcloud service key from env var and save to file
 echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json

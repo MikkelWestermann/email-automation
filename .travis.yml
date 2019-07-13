@@ -1,5 +1,5 @@
 # Use Dockerized infrastructure
-sudo: true
+sudo: enabled
 
 # Use node_js environnement
 language: python
