@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit if error occurs
-set -e
+# set -e
 
 CLUSTER_NAME=portfolio
 
