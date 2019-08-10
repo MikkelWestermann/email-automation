@@ -34,7 +34,7 @@ OS=linux
 ARCH=amd64 
 
 sudo curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" \
-  | tar xz --to-stdout ./docker-credential-gcr \
+  | tar xz --to-stdout /temp/docker-credential-gcr \
   > /temp/docker-credential-gcr && chmod +x /temp/docker-credential-gcr
 
 /temp/docker-credential-gcr configure-docker
