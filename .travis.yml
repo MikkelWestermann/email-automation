@@ -18,7 +18,6 @@ services:
 before_install:
   - chmod +x ci/setup-gcp.sh
   - ci/setup-gcp.sh
-  - docker build -t gcr.io/${PROJECT_NAME}/${LABEL_NAME}:$TRAVIS_COMMIT -f ./Dockerfile .
 
 before_deploy:
   - chmod +x ./ci/prod-deploy.sh
