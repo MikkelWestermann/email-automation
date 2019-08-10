@@ -1,3 +1,5 @@
+sudo chown -R travis:travis /home/travis/
+
 sudo apt-get update
 sudo apt-get -y install lsb-release apt-transport-https
 
