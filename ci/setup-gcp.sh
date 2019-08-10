@@ -1,4 +1,4 @@
-sudo chown -R travis:travis /home/travis/
+cd
 
 sudo apt-get update
 sudo apt-get -y install lsb-release apt-transport-https
@@ -35,6 +35,6 @@ ARCH=amd64
 
 sudo curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" \
   | tar xz --to-stdout ./docker-credential-gcr \
-  > /usr/bin/docker-credential-gcr && chmod +x /usr/bin/docker-credential-gcr
+  > /temp/docker-credential-gcr && chmod +x /temp/docker-credential-gcr
 
-/usr/bin/docker-credential-gcr configure-docker
+/temp/docker-credential-gcr configure-docker
