@@ -1,11 +1,6 @@
 # Use Dockerized infrastructure
 sudo: enabled
 
-# Use node_js environnement
-language: python
-python: 
-  - "3.6"
-
 # Cache Gcloud SDK between commands
 cache:
   directories:
@@ -13,13 +8,11 @@ cache:
 
 # Install services
 services:
-  - docker
-
-before_install:
-  - chmod +x ci/setup-gcp.sh
-  - ci/setup-gcp.sh
+  - docker  
 
 before_deploy:
+  - chmod +x ci/setup-gcp.sh
+  - ci/setup-gcp.sh
   - chmod +x ./ci/prod-deploy.sh
 
 deploy:
