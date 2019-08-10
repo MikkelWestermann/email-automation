@@ -18,8 +18,6 @@ services:
 before_install:
   - chmod +x ci/setup-gcp.sh
   - ci/setup-gcp.sh
-  - sudo curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" \ | tar xz --to-stdout ./docker-credential-gcr \ > /usr/bin/docker-credential-gcr && chmod +x /usr/bin/docker-credential-gcr
-  - /usr/bin/docker-credential-gcr configure-docker
   - docker build -t gcr.io/${PROJECT_NAME}/${LABEL_NAME}:$TRAVIS_COMMIT -f ./Dockerfile .
 
 before_deploy:
