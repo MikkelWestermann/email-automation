@@ -45,6 +45,30 @@ def root ():
     return 'ok', 200
   elif request.method == 'POST': 
     data = request.data
+    email, data, template = json.loads(data).values()
+    # Check that email is provided
+    if email is None:
+      return 'Missing email', 500
+    
+    # Send email with data
+    response;
+    if template is None:
+      response = send_email(email=email, data=data)
+    else:
+      response = send_email(email=email, data=data, template=template);
+
+    # Check the status code from sendgrid request
+    if response.status_code < 400:
+      return 'ok', 200
+    else:
+      return 'Something went wrong' response.status_code
+      
+
+@app.route('/schedule', methods=['POST'])
+@cross_origin(['Content-Type', 'application/json'])
+def schedule_route ():
+  if request.method == 'POST': 
+    data = request.data
     email, date, data = json.loads(data).values()
     # Check that email and date is provided
     if email is None or date is None:
