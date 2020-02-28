@@ -61,7 +61,7 @@ def root ():
     if response.status_code < 400:
       return 'ok', 200
     else:
-      return 'Something went wrong' response.status_code
+      return 'Something went wrong, ' + response.status_code
       
 
 @app.route('/schedule', methods=['POST'])
